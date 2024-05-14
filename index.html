@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Full-Screen Camera Feed</title>
+<style>
+  /* Ensure the video element fills the entire screen */
+  body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+  }
+  #video {
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover; /* This will cover the full window, preserving the aspect ratio */
+  }
+</style>
+</head>
+<body>
+
+<video id="video" autoplay></video>
+<button id="startButton">Start Camera</button>
+
+<script>
+// This function will ask the user for camera access permission
+function getCameraPermission() {
+  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(function(stream) {
+        var video = document.getElementById('video');
+        video.srcObject = stream;
+        video.play();
+        // Request the browser to go full-screen on the video element
+        if (video.requestFullscreen) {
+          video.requestFullscreen();
+        } else if (video.webkitRequestFullscreen) { /* Safari */
+          video.webkitRequestFullscreen();
+        } else if (video.msRequestFullscreen) { /* IE11 */
+          video.msRequestFullscreen();
+        }
+      })
+      .catch(function(error) {
+        console.error('Camera access denied', error);
+      });
+  } else {
+    console.error('getUserMedia not supported in this browser');
+  }
+}
+
+// Add event listener to the button
+document.getElementById('startButton').addEventListener('click', getCameraPermission);
+</script>
+
+</body>
+</html>
