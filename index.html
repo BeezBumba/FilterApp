@@ -14,6 +14,12 @@
             width: 100%;
             height: 100%;
             object-fit: cover; /* Cover the full screen without stretching */
+            position: absolute;
+            z-index: 1; /* Behind the cube */
+        }
+        canvas {
+            position: absolute;
+            z-index: 2; /* In front of the webcam feed */
         }
     </style>
 </head>
