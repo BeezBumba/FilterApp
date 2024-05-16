@@ -1,60 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>Full-Screen Camera Feed</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<style>
-  /* Ensure the video element fills the entire screen */
-  body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    overflow: hidden;
-  }
-  #video {
-    width: 100vw;
-    height: 100vh;
-    object-fit: cover; /* This will cover the full window, preserving the aspect ratio */
-  }
-</style>
+    <title>Full-Screen Camera Display</title>
+    <style>
+        /* Ensure the video stream covers the full screen */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+        #cameraStream {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Cover the full screen without stretching */
+        }
+    </style>
 </head>
 <body>
 
-<video id="video" autoplay muted></video>
-<button id="startButton">Start Camera</button>
+<video id="cameraStream" autoplay></video>
 
 <script>
-// This function will ask the user for camera access permission
-function getCameraPermission() {
-  alert('Requesting camera permission...');
-  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-    navigator.mediaDevices.getUserMedia({ video: true })
-      .then(function(stream) {
-        alert('Camera access granted');
-        var video = document.getElementById('video');
-        video.srcObject = stream;
-        video.play();
-        // Request the browser to go full-screen on the video element
-        if (video.requestFullscreen) {
-          video.requestFullscreen();
-        } else if (video.webkitRequestFullscreen) { /* Safari */
-          video.webkitRequestFullscreen();
-        } else if (video.msRequestFullscreen) { /* IE11 */
-          video.msRequestFullscreen();
-        }
-      })
-      .catch(function(error) {
-        alert('Camera access denied: ' + error.message);
-      });
-  } else {
-    alert('getUserMedia not supported in this browser');
-  }
-}
+    // Request camera permissions and display the video stream
+    if (navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function (stream) {
+                var video = document.getElementById('cameraStream');
+                video.srcObject = stream;
+            })
+            .catch(function (error) {
+                console.log("Something went wrong!", error);
+            });
+    }
 </script>
-  
-// Add event listener to the button
-getCameraPermission()
-<script src="three.js"></script>
+
 </body>
 </html>
